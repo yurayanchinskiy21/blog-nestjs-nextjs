@@ -1,0 +1,10 @@
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "name": "JavaScript",
+  "slug": "javascript",
+  "description": "Tag for JavaScript related posts",
+  "schema": "{\"@context\":\"https://schema.org\",\"@type\":\"Thing\",\"name\":\"JavaScript\"}",
+  "featuredImageUrl": "https://example.com/images/javascript.jpg"
+}

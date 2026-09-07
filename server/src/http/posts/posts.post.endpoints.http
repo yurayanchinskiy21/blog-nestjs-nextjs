@@ -1,0 +1,19 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiZW1haWxNYXhEb2VAZW1haWwuY29tIiwiaWF0IjoxNzg4MjU4ODc5LCJleHAiOjE3ODgyNjI0NzksImF1ZCI6ImxvY2FsaG9zdDozMDAwIiwiaXNzIjoibG9jYWxob3N0OjMwMDAifQ.RZMwE_2lAO6E_Rk1yOV5uvLhqnVS7fCZOzIA6g41_-g
+
+{
+    "title": "What's new with Delete",
+    "postType": "post",
+    "slug": "new-with-nestjs-6767",
+    "status": "draft",
+    "content": "test content  fdssfdfsdsdfdfsfsd",
+    "featuredImageUrl": "http://localhost.com/images/image1.jpg",
+    "publishOn": "2024-09-16T07:46:32+00:00",
+//"tags": ["nestjs", "typescript"],
+    "metaOptions": 
+        {
+            "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
+        },
+        "tags": [1, 2]
+    }
