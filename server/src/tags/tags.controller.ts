@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -9,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { CreateTagDto } from './dtos/create-tag.dto';
 import { TagsService } from './tags.service';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { AuthType } from 'src/auth/enums/auth.type.enum';
 
 @Controller('tags')
 export class TagsController {
@@ -17,6 +20,12 @@ export class TagsController {
   public post(@Body() createTagDto: CreateTagDto) {
     return this.tagsService.create(createTagDto);
   }
+  @Auth(AuthType.None)
+  @Get()
+  public get() {
+    return this.tagsService.findAll();
+  }
+
   @Delete()
   public delete(@Query('id', ParseIntPipe) id: number) {
     return this.tagsService.delete(id);

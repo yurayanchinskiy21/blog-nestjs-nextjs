@@ -11,11 +11,16 @@ export class TagsService {
     private readonly tagsRepository: Repository<Tag>,
   ) {}
 
-  public async create(@Body() createTagDto: CreateTagDto) {
+  public async create(createTagDto: CreateTagDto) {
     const tag = this.tagsRepository.create(createTagDto);
 
     return await this.tagsRepository.save(tag);
   }
+
+  public async findAll() {
+    return await this.tagsRepository.find();
+  }
+
   public async findMultipleTags(tags: number[]) {
     const results = await this.tagsRepository.find({
       where: {

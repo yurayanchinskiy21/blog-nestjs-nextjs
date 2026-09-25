@@ -19,5 +19,6 @@ import { CreatePostProvider } from './providers/create-post.provider';
     TagsModule,
     TypeOrmModule.forFeature([Post, MetaOption]),
   ],
+  exports: [PostsService],
 })
 export class PostsModule {}

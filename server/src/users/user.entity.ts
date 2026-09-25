@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { Post } from 'src/posts/post.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Comment } from '../comments/comment.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -39,6 +39,13 @@ export class User {
 
   @Column({
     type: 'varchar',
+    length: 1024,
+    nullable: true,
+  })
+  avatarUrl?: string | null;
+
+  @Column({
+    type: 'varchar',
     nullable: true,
   })
   @Exclude()
@@ -46,4 +53,6 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.author)
   posts?: Post[];
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments?: Comment[];
 }

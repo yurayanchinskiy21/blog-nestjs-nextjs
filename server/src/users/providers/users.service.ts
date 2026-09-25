@@ -19,6 +19,7 @@ import { FindOneUserByEmailProvider } from 'src/users/providers/find-one-user-by
 import { FindOneByGoogleIdProvider } from './find-one-by-google-id.provider';
 import { CreateGoogleUserProvider } from './create-google-user.provider';
 import { IGoogleUser } from '../interfaces/google-user.interface';
+import { PatchMeDto } from '../dtos/patch-me.dto';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -51,11 +52,6 @@ export class UsersService {
   /**
    * The method to get all users from database
    */
-  // public async findAll() {
-  //   const users = await this.usersRepository.find();
-
-  //   return users;
-  // }
 
   public async findOneByEmail(email: string) {
     return await this.findOneUserByEmailProvider.findOneByEmail(email);
@@ -101,6 +97,23 @@ export class UsersService {
     user.lastName = patchUserDto.lastName ?? user.lastName;
     user.email = patchUserDto.email ?? user.email;
     user.password = patchUserDto.password ?? user.password;
+
+    return await this.usersRepository.save(user);
+  }
+
+  public async updateMe(userId: number, patchMeDto: PatchMeDto) {
+    const user = await this.findOneById(userId);
+    user.firstName = patchMeDto.firstName ?? user.firstName;
+    user.lastName = patchMeDto.lastName ?? user.lastName;
+    user.email = patchMeDto.email ?? user.email;
+    user.password = patchMeDto.password ?? user.password;
+    return await this.usersRepository.save(user);
+  }
+
+  public async updateAvatar(userId: number, avatarUrl: string) {
+    const user = await this.findOneById(userId);
+
+    user.avatarUrl = avatarUrl;
 
     return await this.usersRepository.save(user);
   }

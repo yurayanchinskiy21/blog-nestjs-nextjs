@@ -4,3 +4,12 @@
 #     exports.endDate = date.toString()
 # }}
 # GET http://localhost:3000/posts/?startDate={{startDate}}&endDate={{endDate}}&limit=2&page=2
+
+###
+
+ GET http://localhost:3000/posts/8
+ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiZW1haWxNYXhEb2VAZW1haWwuY29tIiwiaWF0IjoxNzg5Mzg4NzI2LCJleHAiOjE3ODkzOTIzMjYsImF1ZCI6InlvdXItYXVkaWVuY2UiLCJpc3MiOiJ5b3VyLWlzc3VlciJ9.YBQwE7AZEMEoh4ZBnFDdNJ14IcsOCsz1Na6-6d7KRdE
+
+
+###
+GET http://localhost:3000/posts?tags=1

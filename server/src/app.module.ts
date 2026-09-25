@@ -22,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
 import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
 import { UploadsModule } from './uploads/uploads.module';
 import { MailModule } from './mail/mail.module';
+import { CommentsModule } from './comments/comments.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -66,6 +67,7 @@ const ENV = process.env.NODE_ENV;
     PaginationModule,
     UploadsModule,
     MailModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [

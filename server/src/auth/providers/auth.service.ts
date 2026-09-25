@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SignInDto } from '../dtos/signin.dto';
 import { SignInProvider } from './sign-in.provider';
-import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 import { RefreshTokensProvider } from './refresh-tokens.provider';
 
 @Injectable()
@@ -15,7 +14,7 @@ export class AuthService {
     return this.signInProvider.signIn(signInDto);
   }
 
-  public async refreshTokens(refreshTokenDto: RefreshTokenDto) {
-    return await this.refreshTokensProvider.refreshTokens(refreshTokenDto);
+  public refreshTokens(refreshToken: string) {
+    return this.refreshTokensProvider.refreshTokens(refreshToken);
   }
 }

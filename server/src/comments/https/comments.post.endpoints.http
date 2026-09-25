@@ -1,0 +1,7 @@
+ POST http://localhost:3000/comments/posts/8/comments
+ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiZW1haWxNYXhEb2VAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI1ODQ0LCJleHAiOjE3ODkxMjk0NDQsImF1ZCI6InlvdXItYXVkaWVuY2UiLCJpc3MiOiJ5b3VyLWlzc3VlciJ9.eMYByZ2arVxvFyPOkYgY-6yQw9GSNxpgE20Y5G6M2RA
+ Content-Type: application/json
+
+ {
+     "content": "This is a comment for post 8"
+ }

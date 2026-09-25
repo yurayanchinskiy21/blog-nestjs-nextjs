@@ -3,7 +3,7 @@ import { UsersService } from 'src/users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { Post } from '../post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { MetaOption } from 'src/meta-options/meta.option.entity';
 import { TagsService } from 'src/tags/tags.service';
 import { PatchPostDto } from '../dtos/patch-post-dto';
@@ -43,17 +43,118 @@ export class PostsService {
    */
   public async findAll(
     postQuery: GetPostsDto,
-    userId: string,
+    userId?: string,
   ): Promise<Paginated<Post>> {
-    const posts = await this.paginationProvider.paginateQuery(
-      {
-        limit: postQuery.limit,
-        page: postQuery.page,
-      },
-      this.postsRepository,
-    );
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      sortBy = 'publishOn',
+      sortOrder = 'DESC',
+      startDate,
+      endDate,
+      tags,
+    } = postQuery;
 
-    return posts;
+    const query = this.postsRepository
+      .createQueryBuilder('post')
+      .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('post.tags', 'tag')
+      .leftJoinAndSelect('post.metaOptions', 'metaOptions')
+      .leftJoinAndSelect('post.comments', 'comment');
+
+    if (userId) {
+      query.andWhere('author.id = :userId', {
+        userId: Number(userId),
+      });
+    }
+
+    if (search) {
+      query.andWhere(
+        '(post.title ILIKE :search OR post.content ILIKE :search)',
+        {
+          search: `%${search}%`,
+        },
+      );
+    }
+
+    if (startDate) {
+      query.andWhere('post.publishOn >= :startDate', {
+        startDate,
+      });
+    }
+
+    if (endDate) {
+      query.andWhere('post.publishOn <= :endDate', {
+        endDate,
+      });
+    }
+
+    if (tags) {
+      const tagIds = tags.split(',').map(Number);
+
+      query.andWhere('tag.id IN (:...tagIds)', {
+        tagIds,
+      });
+    }
+
+    if (sortBy === 'publishOn') {
+      query.orderBy(`post.${sortBy}`, sortOrder, 'NULLS LAST');
+    } else {
+      query.orderBy(`post.${sortBy}`, sortOrder);
+    }
+
+    query.skip((page - 1) * limit).take(limit);
+
+    const [data, totalItems] = await query.getManyAndCount();
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return {
+      data,
+      meta: {
+        itemsPerPage: limit,
+        totalItems,
+        currentPage: page,
+        totalPages,
+      },
+      links: {
+        first: `?page=1&limit=${limit}`,
+        last: `?page=${totalPages}&limit=${limit}`,
+        current: `?page=${page}&limit=${limit}`,
+        next: page < totalPages ? `?page=${page + 1}&limit=${limit}` : '',
+        previous: page > 1 ? `?page=${page - 1}&limit=${limit}` : '',
+      },
+    };
+  }
+
+  // public async findAll(
+  //   postQuery: GetPostsDto,
+  //   userId?: string,
+  // ): Promise<Paginated<Post>> {
+  //   const where = userId
+  //     ? ({
+  //         author: {
+  //           id: Number(userId),
+  //         },
+  //       } as FindOptionsWhere<Post>)
+  //     : undefined;
+
+  //   return this.paginationProvider.paginateQuery(
+  //     {
+  //       limit: postQuery.limit,
+  //       page: postQuery.page,
+  //     },
+  //     this.postsRepository,
+  //     where,
+  //   );
+  // }
+
+  public async findOneById(id: number) {
+    return this.postsRepository.findOne({
+      where: { id },
+      relations: ['author', 'tags', 'metaOptions', 'comments'],
+    });
   }
 
   public async update(patchPostDto: PatchPostDto) {

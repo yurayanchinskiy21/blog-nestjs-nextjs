@@ -22,11 +22,11 @@ export class RefreshTokensProvider {
     private readonly jwtConfiguration: ConfigType<typeof jwtConfig>,
     private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
-  public async refreshTokens(refreshTokenDto: RefreshTokenDto) {
+  public async refreshTokens(refreshToken: string) {
     try {
       const { sub } = await this.jwtService.verifyAsync<
         Pick<IActiveUserData, 'sub'>
-      >(refreshTokenDto.refreshToken, {
+      >(refreshToken, {
         secret: this.jwtConfiguration.secret,
         audience: this.jwtConfiguration.audience,
         issuer: this.jwtConfiguration.issuer,

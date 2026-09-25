@@ -1,19 +1,21 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { postType } from './enums/post-type.enum';
 import { postStatus } from './enums/post-status.enum';
-import { CreatePostMetaOptionsDto } from '../meta-options/dtos/create-post-meta-options.dto';
 import { MetaOption } from 'src/meta-options/meta.option.entity';
 import { User } from 'src/users/user.entity';
 import { Tag } from 'src/tags/tag.entity';
+import { Comment } from 'src/comments/comment.entity';
 
 @Entity()
 export class Post {
@@ -70,6 +72,9 @@ export class Post {
   })
   featuredImageUrl?: string;
 
+  @CreateDateColumn()
+  createDate!: Date;
+
   @Column({
     type: 'timestamp',
     nullable: true,
@@ -89,4 +94,7 @@ export class Post {
   })
   @JoinColumn()
   metaOptions?: MetaOption;
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments?: Comment[];
 }

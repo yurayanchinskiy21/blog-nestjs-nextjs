@@ -6,3 +6,13 @@ Content-Type: application/json
     "firstName": "Johnny",
     "lastName": "Coen"
     }
+
+    ### Change Password
+PATCH http://localhost:3000/users/me/password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiZW1haWxNYXhEb2VAZW1haWwuY29tIiwiaWF0IjoxNzg5Mzk1OTI1LCJleHAiOjE3ODkzOTk1MjUsImF1ZCI6InlvdXItYXVkaWVuY2UiLCJpc3MiOiJ5b3VyLWlzc3VlciJ9.EphGUvxmffhj6qLCMeiGM-MIbLrI1C0i1h1OhcJL3nc 
+
+{ 
+    "currentPassword": "a123456!",
+    "newPassword": "NewPassword123!" 
+}

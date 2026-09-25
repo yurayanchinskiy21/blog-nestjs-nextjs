@@ -10,14 +10,12 @@ import { UsersCreateManyProvider } from './providers/users-create-many.provider'
 import { PaginationModule } from 'src/common/pagination/pagination.module';
 import { CreateUserProvider } from './providers/create-user.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email.provider';
-import jwtConfig from 'src/auth/config/jwt.config';
-import { JwtModule } from '@nestjs/jwt';
-import { APP_GUARD } from '@nestjs/core';
-import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
 import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
 import { BcryptProvider } from 'src/auth/providers/bcrypt.provider';
 import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
+import { ChangePasswordProvider } from './providers/change-password.provider';
+import { S3Provider } from './providers/s3.provider';
 
 @Module({
   controllers: [UsersController],
@@ -32,6 +30,8 @@ import { CreateGoogleUserProvider } from './providers/create-google-user.provide
       useClass: BcryptProvider,
     },
     CreateGoogleUserProvider,
+    ChangePasswordProvider,
+    S3Provider,
   ],
   exports: [UsersService],
   imports: [

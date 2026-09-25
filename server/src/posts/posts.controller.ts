@@ -18,17 +18,32 @@ import { PatchPostDto } from './dtos/patch-post-dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
 import * as activeUserDataInterface from 'src/auth/interfaces/active-user-data.interface';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { AuthType } from 'src/auth/enums/auth.type.enum';
 
 @Controller('posts')
 @ApiTags('Posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {} //Injected postsService class
-  @Get('/{:userId}')
-  public getPosts(
+  @Get()
+  @Auth(AuthType.None)
+  public getPosts(@Query() postQuery: GetPostsDto) {
+    return this.postsService.findAll(postQuery);
+  }
+
+  @Get('user/:userId')
+  @Auth(AuthType.None)
+  public getPostsByUser(
     @Param('userId') userId: string,
     @Query() postQuery: GetPostsDto,
   ) {
     return this.postsService.findAll(postQuery, userId);
+  }
+
+  @Get(':id')
+  @Auth(AuthType.None)
+  public getPostById(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.findOneById(id);
   }
   @ApiOperation({
     summary: 'Creates a new blog post',
